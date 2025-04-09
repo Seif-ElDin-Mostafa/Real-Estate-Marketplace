@@ -1,4 +1,3 @@
-import express from 'express'
 import Properties from '../models/property.model.mjs'
 
 export const createProperty = async (req, res) => {
