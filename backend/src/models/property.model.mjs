@@ -7,7 +7,6 @@ const propertySchema = new Schema({
     beds: Number,
     description: String,
     owner: String,
-    broker: String,
     isSold: Boolean,
     image: String
 })
