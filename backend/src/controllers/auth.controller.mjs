@@ -4,9 +4,9 @@ import bcrypt from "bcrypt"
 
 export const register = async (req, res) => {
     try {
-        const {body: {username, password}} = req;
+        const {body: {username, password, role, email, phone}} = req;
         const hashedPassword = await hashPassword(password);
-        const user = await Users.create(username, hashedPassword);
+        const user = await Users.create(username, hashedPassword, role, email, phone);
         return res.status(201).send(user);
     } catch (error) {
         console.error('Error registering user', error);
