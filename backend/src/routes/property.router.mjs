@@ -8,7 +8,7 @@ const router = Router();
 
 router.post('/', validate(propertyValidator), createProperty);
 router.get('/:id', findProperty);
-router.patch('/:id', updateProperty);
+router.put('/:id', updateProperty);
 router.delete('/:id', deleteProperty);
 
 
