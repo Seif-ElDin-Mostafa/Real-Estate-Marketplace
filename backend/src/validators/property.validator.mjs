@@ -7,7 +7,6 @@ const propertyValidator = vine.object({
     beds: vine.number(),
     description: vine.string().trim(),
     owner: vine.string().trim(),
-    broker: vine.string().trim(),
     isSold: vine.boolean(),
     image: vine.string().trim(),
 })
