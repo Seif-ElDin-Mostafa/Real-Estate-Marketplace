@@ -12,4 +12,6 @@ export const validate = (schema) => async (req, res, next) => {
             return res.status(400).send(error.errors);
         }
     }
+
+    next();
 }
