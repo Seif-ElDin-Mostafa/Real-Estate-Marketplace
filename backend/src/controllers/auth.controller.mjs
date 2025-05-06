@@ -4,20 +4,19 @@ import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../helpers/config.mjs";
 
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
     try {
         const {body: {username, password, role, email, phone}} = req;
         const hashedPassword = hashPassword(password);
         const user = await Users.create({username, password: hashedPassword, role, email, phone});
         return res.status(201).send({ success: true, data: user, message:"User Registered", error:null});
     } catch (error) {
-        console.error('Error registering user', error);
-        return res.status(400).send(error.errors);
+        next(error);
     }
 }
 
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
     const {body: {username, password}} = req;
     try {
         const user = await Users.findOne(username);
@@ -30,7 +29,6 @@ export const login = async (req, res) => {
 
         return res.status(200).json({token});
     } catch (error) {
-        console.error('Error logging in user', error);
-        return res.status(400).send(error.errors);
+        next(error);
     }
   };

@@ -1,17 +1,16 @@
 import Properties from "../models/property.model.mjs";
 
-export const createProperty = async (req, res) => {
+export const createProperty = async (req, res, next) => {
   try {
     const { body } = req;
     const property = await Properties.create(body);
     return res.status(201).send({ success: true, data: property, message:"Property Created", error:null});
   } catch (error) {
-    console.error(error);
-    return res.status(400).send(error.errors);
+    next(error);
   }
 };
 
-export const findProperty = async (req, res) => {
+export const findProperty = async (req, res, next) => {
   try {
     const {
       params: { id },
@@ -21,12 +20,11 @@ export const findProperty = async (req, res) => {
     if (!property) return res.sendStatus(404);
     return res.status(200).send({ success: true, data: property, message:"Property Found", error:null});
   } catch (error) {
-    console.error(error);
-    return res.status(400).send(error.errors);
+    next(error);
   }
 };
 
-export const updateProperty = async (req, res) => {
+export const updateProperty = async (req, res, next) => {
   try {
     const {
       params: { id },
@@ -36,12 +34,11 @@ export const updateProperty = async (req, res) => {
     if (!result) return res.sendStatus(404);
     return res.status(200).send({ success: true, data: result, message:"Property Updated", error:null});
   } catch (error) {
-    console.error(error);
-    return res.status(400).send(error.errors);
+    next(error);
   }
 };
 
-export const deleteProperty = async (req, res) => {
+export const deleteProperty = async (req, res, next) => {
   try {
     const {
       params: { id },
@@ -50,7 +47,6 @@ export const deleteProperty = async (req, res) => {
     if (!result) return res.sendStatus(404);
     return res.status(200).send({ success: true, data: null, message:"Property Deleted", error:null});
   } catch (error) {
-    console.error(error);
-    return res.status(400).send(error.errors);
+    next(error);
   }
 };
