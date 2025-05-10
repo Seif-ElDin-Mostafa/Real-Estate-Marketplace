@@ -5,7 +5,6 @@ const propertySchema = new Schema({
     price: Number,
     address: String,
     beds: Number,
-    description: String,
     owner: String,
     isSold: Boolean,
     image: String
