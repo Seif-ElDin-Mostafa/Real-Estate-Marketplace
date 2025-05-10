@@ -2,7 +2,7 @@ import Users from "../models/user.model.mjs"
 import hashPassword from "../helpers/hash.mjs"
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../helpers/config.mjs";
-
+import bcrypt from "bcrypt";
 
 export const register = async (req, res, next) => {
     try {
@@ -19,9 +19,8 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
     const {body: {username, password}} = req;
     try {
-        const user = await Users.findOne(username);
-        const hashedPassword = hashPassword(password);
-        const isMatch = await bcrypt.compare(hashedPassword, user.password);
+       const user = await Users.findOne({ username });
+        const isMatch = await bcrypt.compare(password, user.password);
         if(!user || !isMatch) return res.status(401).send({ success: false, message:"Invalid Credentials"});
 
         const payload = {id: user._id, username: user.username, role: user.role};

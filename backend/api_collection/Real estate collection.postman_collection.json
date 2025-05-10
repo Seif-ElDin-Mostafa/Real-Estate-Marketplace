@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "9f7915f6-f86e-4099-a966-39941fb9d3df",
+		"name": "Real estate collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34649270"
+	},
+	"item": [
+		{
+			"name": "property crud",
+			"item": [
+				{
+					"name": "Post property",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWUwODJkNTBmMWZlMzE4YTQzYzBhNyIsInVzZXJuYW1lIjoiYWRtaW5Vc2VyIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQ2ODAxNjMyfQ.8KDt3-7MpcISA_FjsCwcADGHuZucBcJL9osVTsxCqbo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\":\"stylish house\",\r\n    \"price\": 120000,\r\n    \"address\": \"123 Main St, Cairo, Egypt\",\r\n    \"beds\": 2,\r\n    \"description\": \"A stylish apartment located in the heart of the city with great access to public transportation.\",\r\n    \"owner\": \"user123\",\r\n    \"isSold\": false,\r\n    \"image\": \"https://example.com/images/apartment1.jpg\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/property",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get property",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "update property",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/property/<objectid>",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"property",
+								"<objectid>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete property",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/property/<objectid>",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"property",
+								"<objectid>"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "user register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n  \"username\": \"adminUser\",\r\n    \"password\": \"hashedAdminPass\",\r\n    \"role\": \"admin\",\r\n    \"email\": \"admin@example.com\",\r\n    \"phone\": \"0101000000\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"adminUser\",\r\n    \"password\": \"hashedAdminPass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
