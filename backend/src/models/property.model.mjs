@@ -1,11 +1,11 @@
 import {Schema, model} from "mongoose"
 
 const propertySchema = new Schema({
-    name: String,
     price: Number,
     address: String,
     beds: Number,
-    owner: String,
+    baths: Number,
+    sellerId: String,
     isSold: Boolean,
     image: String
 })
