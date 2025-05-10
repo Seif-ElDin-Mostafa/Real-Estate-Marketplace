@@ -2,7 +2,8 @@ import { Schema, model } from "mongoose";
 
 const transactionSchema = new Schema({
   propertyId: String,
-  userId: String,
+  buyerId: String,
+  sellerId: String,
   timestamp: String,
 });
 
