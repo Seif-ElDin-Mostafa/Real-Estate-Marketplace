@@ -4,6 +4,7 @@ import Home from './Home';
 import Buy from './Buy';
 import Sell from './Sell';
 import AboutUs from './AboutUs';
+import Profile from './Profile';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/listings" element={<div>Listings Page</div>} />
         <Route path="/buy" element={<Buy />} />
         <Route path="/sale" element={<Sell />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

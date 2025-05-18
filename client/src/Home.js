@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import Modal from 'react-modal';
 import Login from './Login';
 import CreateAccount from './CreateAccount';
+import axios from 'axios';
 
 
 // ربط المودال مع الـ root
@@ -14,6 +15,44 @@ function Home() {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isCreateAccountModalOpen, setIsCreateAccountModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  const checkLoginStatus = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const response = await axios.get('http://localhost:5000/auth/verify', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        if (response.status === 200) {
+          setIsLoggedIn(true);
+        } else {
+          handleLogout();
+        }
+      } catch (error) {
+        handleLogout();
+      }
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
+
+  const handleLoginSuccess = () => {
+    setIsLoginModalOpen(false);
+    checkLoginStatus();
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+  };
 
   const handleHeroSubmit = (e) => {
     e.preventDefault();
@@ -60,21 +99,34 @@ function Home() {
         <nav className="flex items-center space-x-4">
           <Link to="/about" className="text-gray-600 hover:text-blue-500">About Us</Link>
           <Link to="/buy" className="text-gray-600 hover:text-blue-500">Buy</Link>
-          <Link to="/Sale" className="text-gray-600 hover:text-blue-500">Sell</Link>
+          <Link to="/sale" className="text-gray-600 hover:text-blue-500">Sell</Link>
           
-         
-          <button
-            onClick={() => setIsCreateAccountModalOpen(true)}
-            className="text-gray-600 hover:text-blue-500"
-          >
-            Create Account
-          </button>
-          <button
-            onClick={() => setIsLoginModalOpen(true)}
-            className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
-          >
-            Login
-          </button>
+          {isLoggedIn ? (
+            <>
+              <Link to="/profile" className="text-gray-600 hover:text-blue-500">Profile</Link>
+              <button
+                onClick={handleLogout}
+                className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => setIsCreateAccountModalOpen(true)}
+                className="text-gray-600 hover:text-blue-500"
+              >
+                Create Account
+              </button>
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+              >
+                Login
+              </button>
+            </>
+          )}
         </nav>
       </header>
 
@@ -91,7 +143,7 @@ function Home() {
         >
           ✕
         </button>
-        <Login />
+        <Login onLoginSuccess={handleLoginSuccess} />
       </Modal>
 
       {/* Create Account Modal */}
