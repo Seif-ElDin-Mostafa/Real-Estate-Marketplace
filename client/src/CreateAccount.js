@@ -5,18 +5,23 @@ function CreateAccount() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [type, setType] = useState('user'); // Default value is 'user'
+  const role = 'user'; // Default value is 'user'
   const [phone, setPhone] = useState('');
 
   async function registerUser() {
     try {
-      await axios.post('http://localhost:5000/api/register', {
+      const response = await axios.post('http://localhost:5000/auth/register', {
         username,
         email,
         password,
-        type,
+        role,
         phone
       });
+
+      if (response.status === 201) {
+        alert('Registeration successful!');
+        // Redirect to dashboard or home page
+      }
     } catch (error) {
       console.error('Error registering user:', error);
     }

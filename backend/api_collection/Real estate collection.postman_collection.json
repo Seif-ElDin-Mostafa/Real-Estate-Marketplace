@@ -34,12 +34,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/property",
+							"raw": "http://localhost:5000/property",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"property"
 							]
@@ -61,12 +61,12 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/property/<objectid>",
+							"raw": "http://localhost:5000/property/<objectid>",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"property",
 								"<objectid>"
@@ -81,12 +81,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/property/<objectid>",
+							"raw": "http://localhost:5000/property/<objectid>",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"property",
 								"<objectid>"
@@ -115,12 +115,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/register",
+							"raw": "http://localhost:5000/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"register"
 							]
@@ -143,12 +143,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/login",
+							"raw": "http://localhost:5000/auth/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "5000",
 							"path": [
 								"auth",
 								"login"
