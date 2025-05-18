@@ -25,17 +25,48 @@ function Sale() {
   };
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setImages(files);
-    const previews = files.map(file => URL.createObjectURL(file));
-    setPreviewImages(previews);
-  };
+  const file = e.target.files[0];
+  if (file) {
+    setImages([file]); 
+    setPreviewImages([URL.createObjectURL(file)]);
+  }
+};
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const propertyData = { location, bedrooms, bathrooms, price, images, furnished, position, sellerId, isSold };
-    console.log('Property Data:', propertyData);
-    alert('Property listed successfully! Check console for details.');
+     const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+  const base64Image = images[0] ? await convertToBase64(images[0]) : '';
+  const propertyData = {
+  price,
+  address: location,  
+  beds: bedrooms,
+  baths: bathrooms,
+  sellerId,
+  isSold,
+  image: base64Image
+  }; 
+  try {
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWUwODJkNTBmMWZlMzE4YTQzYzBhNyIsInVzZXJuYW1lIjoiYWRtaW5Vc2VyIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQ2ODAxNjMyfQ.8KDt3-7MpcISA_FjsCwcADGHuZucBcJL9osVTsxCqbo"
+    const res = await fetch("http://localhost:3000/properties", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(propertyData)
+    }); 
+
+    const result = await res.json();
+    console.log('Response:', result);
+    alert("Property listed successfully!");
+    // Reset
     setLocation('');
     setBedrooms('');
     setBathrooms('');
@@ -46,7 +77,11 @@ function Sale() {
     setPosition([51.505, -0.09]);
     setSellerId('');
     setIsSold(false);
-  };
+  } catch (error) {
+    console.error("Error submitting property:", error);
+    alert("Something went wrong.");
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -151,7 +186,7 @@ function Sale() {
             <label className="block text-gray-700 font-medium mb-1">Upload Images</label>
             <input
               type="file"
-              multiple
+              accept="image/*"
               onChange={handleImageChange}
               className="w-full px-3 py-2 border rounded"
             />
