@@ -31,3 +31,16 @@ export const login = async (req, res, next) => {
         next(error);
     }
   };
+ export const getUser = async (req, res, next) => {
+  try {
+    const user = await Users.findById(req.user.id);
+    if (!user) {
+      return res.sendStatus(404);  
+    }
+
+    return res.status(200).send({ success: true, data: user, message: "User Found", error: null });
+  } catch (error) {
+    next(error);
+  }
+};
+  
