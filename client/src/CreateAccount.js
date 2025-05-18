@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function CreateAccount() {
   const [username, setUsername] = useState('');
@@ -7,13 +8,24 @@ function CreateAccount() {
   const [type, setType] = useState('user'); // Default value is 'user'
   const [phone, setPhone] = useState('');
 
+  async function registerUser() {
+    try {
+      await axios.post('http://localhost:5000/api/register', {
+        username,
+        email,
+        password,
+        type,
+        phone
+      });
+    } catch (error) {
+      console.error('Error registering user:', error);
+    }
+  }
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Username:', username);
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Type:', type);
-    console.log('Phone:', phone);
+    registerUser();
   };
 
   return (
@@ -48,21 +60,6 @@ function CreateAccount() {
             className="w-full px-4 py-2 border rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
-        </div>
-        <div>
-          <label htmlFor="type" className="block text-gray-700 font-medium mb-2">
-            Account Type
-          </label>
-          <select
-            id="type"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          >
-            <option value="admin">Admin</option>
-            <option value="user">User</option>
-          </select>
         </div>
         <div>
           <label htmlFor="phone" className="block text-gray-700 font-medium mb-2">
