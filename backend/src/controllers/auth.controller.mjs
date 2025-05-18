@@ -5,14 +5,40 @@ import { JWT_SECRET } from "../helpers/config.mjs";
 import bcrypt from "bcrypt";
 
 export const register = async (req, res, next) => {
-    try {
-        const {body: {username, password, role, email, phone}} = req;
-        const hashedPassword = hashPassword(password);
-        const user = await Users.create({username, password: hashedPassword, role, email, phone});
-        return res.status(201).send({ success: true, data: user, message:"User Registered", error:null});
-    } catch (error) {
-        next(error);
+  try {
+    const { username, password, role, email, phone } = req.body;
+
+  
+    const existingUser = await Users.findOne({
+      $or: [{ username }, { email }, { phone }]
+    });
+
+    if (existingUser) {
+      return res.status(409).send({
+        success: false,
+        message: 'Username, email, or phone number already in use',
+        error: 'Conflict'
+      });
     }
+
+    const hashedPassword = hashPassword(password);
+    const user = await Users.create({
+      username,
+      password: hashedPassword,
+      role,
+      email,
+      phone
+    });
+
+    return res.status(201).send({
+      success: true,
+      data: user,
+      message: 'User Registered',
+      error: null
+    });
+  } catch (error) {
+    next(error);
+  }
 }
 
 
