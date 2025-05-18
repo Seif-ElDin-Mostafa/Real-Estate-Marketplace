@@ -1,8 +1,25 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  async function loginUser() {
+    try {
+      const response = await axios.post('http://localhost:5000/auth/login', {
+        username,
+        password
+      });
+      if (response.status === 200) {
+        alert('Login successful!');
+        // Redirect to dashboard or home page
+      }
+    } catch (error) {
+      alert('Login failed. Please check your username and password.');
+      console.error('Error logging in:', error);
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -10,8 +27,8 @@ function Login() {
       alert('Please enter both username and password.');
       return;
     }
-    console.log('Username:', username);
-    console.log('Password:', password);
+
+    loginUser();
   };
 
   return (

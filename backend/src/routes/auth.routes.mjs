@@ -11,6 +11,6 @@ router.post("/register", validate(userValidator), register);
 
 router.post("/login", login);
 
-router.get("/me",authenticate,getUser);
+router.get("/me", authenticate, getUser);
 
 export default router;
