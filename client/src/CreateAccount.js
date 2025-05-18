@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function CreateAccount() {
   const [username, setUsername] = useState('');
@@ -7,6 +8,7 @@ function CreateAccount() {
   const [password, setPassword] = useState('');
   const role = 'user'; // Default value is 'user'
   const [phone, setPhone] = useState('');
+  const navigate = useNavigate();
 
   async function registerUser() {
     try {
@@ -19,14 +21,23 @@ function CreateAccount() {
       });
 
       if (response.status === 201) {
-        alert('Registeration successful!');
-        // Redirect to dashboard or home page
+        // Store user data in localStorage
+        localStorage.setItem('user', JSON.stringify({
+          username,
+          email,
+          role,
+          phone,
+          id: response.data.id
+        }));
+
+        alert('Registration successful!');
+        window.location.reload(); // Refresh to update the navbar
       }
     } catch (error) {
       console.error('Error registering user:', error);
+      alert('Registration failed. Please try again.');
     }
   }
-
 
   const handleSubmit = (e) => {
     e.preventDefault();

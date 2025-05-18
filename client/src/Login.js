@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({ onLoginSuccess }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   async function loginUser() {
     try {
@@ -11,9 +13,14 @@ function Login() {
         username,
         password
       });
+      
       if (response.status === 200) {
-        alert('Login successful!');
-        // Redirect to dashboard or home page
+        // Store the JWT token
+        localStorage.setItem('token', response.data.token);
+        if (onLoginSuccess) {
+          onLoginSuccess(); // Call the callback to update parent state
+        }
+        navigate('/'); // Navigate to home page
       }
     } catch (error) {
       alert('Login failed. Please check your username and password.');
