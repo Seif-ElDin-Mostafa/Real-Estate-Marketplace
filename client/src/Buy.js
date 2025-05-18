@@ -4,11 +4,10 @@ import axios from 'axios';
 
 function Buy() {
   const [properties, setProperties] = useState([]);  // Initialize as an array to use map
-  const [propertyType, setPropertyType] = useState('All Types');
   const [bedrooms, setBedrooms] = useState('');
   const [bathrooms, setBathrooms] = useState('');
   const [priceRange, setPriceRange] = useState('');
-  const [areaRange, setAreaRange] = useState('');
+
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -29,6 +28,27 @@ function Buy() {
 
     fetchProperties();  // Fetch properties when the component mounts
   }, []);
+   const filterProperties = () => {
+    return properties.filter(property => {
+      // Filter by bedrooms
+      if (bedrooms && property.beds !== parseInt(bedrooms)) {
+        return false;
+      }
+      // Filter by bathrooms
+      if (bathrooms && property.baths !== parseInt(bathrooms)) {
+        return false;
+      }
+      // Filter by price range
+      if (priceRange) {
+        const [minPrice, maxPrice] = priceRange.split('-').map(Number);
+        if (property.price < minPrice || (maxPrice && property.price > maxPrice)) {
+          return false;
+        }
+      }
+      return true;
+    });
+  };
+   const filteredProperties = filterProperties();
 
   if (properties.length === 0) {
     return <div className="min-h-screen bg-gray-100 p-4">No properties available</div>;
@@ -99,7 +119,7 @@ function Buy() {
 
       {/* Listings */}
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {properties.map((property) => (
+        {filteredProperties.map((property) => (
           <div key={property._id} className="bg-white p-4 rounded shadow">
             <img
               src={property.image}
