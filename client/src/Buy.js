@@ -1,21 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-async function fetchProperties() {
-  const response = await axios.get('http://localhost:5000/property/');
-  return response.data;
-}
-
 function Buy() {
-  // حالة الفلاتر (لسه موجودة بس مش هتأثر)
+  const [properties, setProperties] = useState([]);  // Initialize as an array to use map
   const [propertyType, setPropertyType] = useState('All Types');
   const [bedrooms, setBedrooms] = useState('');
   const [bathrooms, setBathrooms] = useState('');
   const [priceRange, setPriceRange] = useState('');
   const [areaRange, setAreaRange] = useState('');
-  
-  const properties = fetchProperties();
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/property/');
+        console.log('Properties response:', response.data); // Log the response
+        if (response.data.success && Array.isArray(response.data.data)) {
+          setProperties(response.data.data); // Access the 'data' array
+        } else {
+          console.error('Unexpected response format:', response.data);
+          setProperties([]);  // Default to an empty array in case of unexpected format
+        }
+      } catch (error) {
+        console.error('Error fetching properties:', error);
+        setProperties([]);  // Set to an empty array if there's an error
+      }
+    };
+
+    fetchProperties();  // Fetch properties when the component mounts
+  }, []);
+
+  if (properties.length === 0) {
+    return <div className="min-h-screen bg-gray-100 p-4">No properties available</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -23,7 +40,7 @@ function Buy() {
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">RealEstate</h1>
         <div className="flex items-center space-x-2">
-            <input
+          <input
             type="text"
             placeholder="Search..."
             className="border p-1 rounded"
@@ -34,20 +51,8 @@ function Buy() {
           </Link>
         </div>
       </div>
-
       {/* Filters */}
       <div className="flex flex-wrap space-x-2 mb-4">
-        {/* فلتر نوع العقار */}
-        <select
-          value={propertyType}
-          onChange={(e) => setPropertyType(e.target.value)}
-          className="bg-gray-200 px-2 py-1 rounded"
-        >
-          <option>All Types</option>
-          <option>Apartment</option>
-          <option>House</option>
-          <option>Villa</option>
-        </select>
 
         {/* فلتر عدد الغرف */}
         <select
@@ -76,18 +81,6 @@ function Buy() {
           <option value="20000001">Above $20M</option>
         </select>
 
-        {/* فلتر المساحة */}
-        <select
-          value={areaRange}
-          onChange={(e) => setAreaRange(e.target.value)}
-          className="bg-gray-200 px-2 py-1 rounded"
-        >
-          <option value="">All Areas</option>
-          <option value="0-100">Up to 100 m²</option>
-          <option value="101-150">101 - 150 m²</option>
-          <option value="151-200">151 - 200 m²</option>
-          <option value="201">Above 200 m²</option>
-        </select>
 
         {/* فلتر عدد الحمامات */}
         <select
@@ -105,24 +98,23 @@ function Buy() {
       </div>
 
       {/* Listings */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {properties.map((property) => (
-          <div key={property.id} className="bg-white p-4 rounded shadow">
+          <div key={property._id} className="bg-white p-4 rounded shadow">
             <img
               src={property.image}
-              alt={property.type}
+              alt={property.address}
               className="w-full h-40 object-cover rounded"
             />
-            <h3 className="text-lg font-semibold mt-2">{property.type} to Buy</h3>
+            <h3 className="text-lg font-semibold mt-2">{property.address}</h3>
             <p className="text-gray-600">
-              {property.beds} Beds | {property.baths} Baths | {property.area} m²
+              {property.beds} Beds | {property.baths} Baths
             </p>
             <p className="text-green-600 font-bold mt-2">${property.price.toLocaleString()}</p>
             <div className="flex space-x-2 mt-2 justify-center">
               <button className="bg-green-500 text-white px-2 py-1 rounded">Call</button>
               <button className="bg-blue-500 text-white px-2 py-1 rounded">Chat</button>
               <button className="bg-blue-500 text-white px-12 py-1 rounded w-60 ">Buy</button>
-              
             </div>
           </div>
         ))}
