@@ -13,8 +13,8 @@ startServer();
 app.use(express.json());
 app.use(cors());
 
-app.use("/property", authenticate, propertyRouter);
 app.use('/auth', authRouter);
+app.use('/property', authenticate, propertyRouter);
 app.use('/transaction', authenticate, transactionRouter);
 
 app.use(exceptionHandler);
