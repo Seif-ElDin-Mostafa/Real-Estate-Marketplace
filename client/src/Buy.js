@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+async function fetchProperties() {
+  const response = await axios.get('http://localhost:5000/property/');
+  return response.data;
+}
 
 function Buy() {
   // حالة الفلاتر (لسه موجودة بس مش هتأثر)
@@ -8,18 +14,8 @@ function Buy() {
   const [bathrooms, setBathrooms] = useState('');
   const [priceRange, setPriceRange] = useState('');
   const [areaRange, setAreaRange] = useState('');
-
-  // بيانات العقارات (مثال)
-  const properties = [
-    { id: 1, type: 'Apartment', beds: 3, baths: 2, area: 125, price: 3168750, image: 'Apartment.jpg' },
-    { id: 2, type: 'Villa', beds: 4, baths: 3, area: 166, price: 16120000, image: 'Villa.jpg' },
-    { id: 3, type: 'Townhouse', beds: 3, baths: 2, area: 166, price: 2400000, image: 'Townhouse.jpg' },
-    { id: 4, type: 'Villa', beds: 3, baths: 2, area: 166, price: 2400000, image: 'Villa2.jpg' },
-    { id: 5, type: 'Apartment', beds: 3, baths: 2, area: 166, price: 2400000, image: 'Apartment2.jpg' },
-    { id: 6, type: 'Villa', beds: 3, baths: 2, area: 166, price: 2400000, image: 'Villa3.jpg' },
-    { id: 7, type: 'Townhouse', beds: 3, baths: 2, area: 166, price: 2400000, image: 'Townhouse2.jpg' },
-    { id: 8, type: 'House', beds: 3, baths: 2, area: 166, price: 2400000, image: 'House.jpg' },
-  ];
+  
+  const properties = fetchProperties();
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">

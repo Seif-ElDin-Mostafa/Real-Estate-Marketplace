@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/auth', authRouter);
-app.use('/property', authenticate, propertyRouter);
+app.use('/property', propertyRouter);
 app.use('/transaction', authenticate, transactionRouter);
 
 app.use(exceptionHandler);

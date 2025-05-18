@@ -29,10 +29,7 @@ export const createProperty = async (req, res, next) => {
 
 export const findProperty = async (req, res, next) => {
   try {
-    const {
-      params: { id },
-    } = req;
-    if (!id) return res.status(200).send(await Properties.find({}));
+    const { params: { id } } = req;
     const property = await Properties.findById(id);
     if (!property) return res.sendStatus(404);
     return res.status(200).send({ success: true, data: property, message:"Property Found", error:null});
@@ -40,6 +37,16 @@ export const findProperty = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getAllProperties = async (req, res, next) => {
+  try {
+    const properties = await Properties.find();
+    if (!properties) return res.sendStatus(404);
+    return res.status(200).send({ success: true, data: properties, message:"Properties Found", error:null});
+  } catch (error) {
+    next(error);
+  }
+}
 
 export const updateProperty = async (req, res, next) => {
   try {
