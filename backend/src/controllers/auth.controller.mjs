@@ -96,4 +96,15 @@ export const updateUser = async (req, res, next) => {
         next(error);
     }
 }
+export const deleteUser = async (req, res, next) => {
+    try{
+        if (req.user.role !== "admin") return res.sendStatus(403);
+          const user = await Users.findByIdAndDelete(req.params.id);
+          if (!user) return res.sendStatus(404);
+          return res.status(200).send({ success: true, data: null, message: "User Deleted", error: null });
+    }
+    catch(error){
+        next(error);
+    }
+}
   
