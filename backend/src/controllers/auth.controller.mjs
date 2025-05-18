@@ -33,7 +33,6 @@ export const login = async (req, res, next) => {
   };
  export const getUser = async (req, res, next) => {
   try {
-    console.log(req.user);
     if (req.user.role === "admin") {
       const users = await Users.find({});
       return res.status(200).send({ success: true, data: users, message: "Users Found", error: null });
@@ -48,4 +47,27 @@ export const login = async (req, res, next) => {
     next(error);
   }
 };
+export const updateMe = async (req, res, next) => {
+    try{
+          const { body } = req;
+          const user = await Users.findByIdAndUpdate(req.user.id, body, { new: true });
+          if (!user) return res.sendStatus(404);
+          return res.status(200).send({ success: true, data: user, message: "User Updated", error: null });
+    }
+    catch(error){
+        next(error);
+    }
+}
+export const updateUser = async (req, res, next) => {
+    try{
+        if (req.user.role !== "admin") return res.sendStatus(403);
+          const { body } = req;
+          const user = await Users.findByIdAndUpdate(req.params.id, body, { new: true });
+          if (!user) return res.sendStatus(404);
+          return res.status(200).send({ success: true, data: user, message: "User Updated", error: null });
+    }
+    catch(error){
+        next(error);
+    }
+}
   
