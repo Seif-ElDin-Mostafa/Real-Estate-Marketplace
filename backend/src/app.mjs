@@ -8,10 +8,15 @@ import { authenticate } from "./middleware/authenticate.middleware.mjs"
 import { exceptionHandler } from "./middleware/exceptionHandler.middleware.mjs"
 
 export const app = express();
-startServer();
 
-app.use(express.json());
-app.use(cors());
+app.use(express.json({limit: "1gb"}));
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+    credentials: true
+}));
+
+app.options("*", cors());
 
 app.use('/auth', authRouter);
 app.use('/property', propertyRouter);
@@ -22,3 +27,5 @@ app.use(exceptionHandler);
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
+
+startServer();

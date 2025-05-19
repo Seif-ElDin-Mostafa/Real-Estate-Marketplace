@@ -4,17 +4,7 @@ import Users from "../models/user.model.mjs";
 export const createProperty = async (req, res, next) => {
   try {
     const { body } = req;
-    const { sellerId } = body;
-    const existingUser = await Users.findById(sellerId);
-    if (!existingUser) {
-      return res.status(400).send({
-        success: false,
-        message: 'Seller ID does not correspond to an existing user',
-        error: 'Invalid Seller ID'
-      });
-    }
-
-   
+    body.sellerId = req.user.id;
     const property = await Properties.create(body);
     return res.status(201).send({
       success: true,

@@ -21,17 +21,8 @@ function CreateAccount() {
       });
 
       if (response.status === 201) {
-        // Store user data in localStorage
-        localStorage.setItem('user', JSON.stringify({
-          username,
-          email,
-          role,
-          phone,
-          id: response.data.id
-        }));
-
         alert('Registration successful!');
-        window.location.reload(); // Refresh to update the navbar
+        window.location.reload();
       }
     } catch (error) {
       console.error('Error registering user:', error);

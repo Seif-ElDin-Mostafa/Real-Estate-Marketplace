@@ -18,41 +18,6 @@ function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  const checkLoginStatus = async () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const response = await axios.get('http://localhost:5000/auth/verify', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        if (response.status === 200) {
-          setIsLoggedIn(true);
-        } else {
-          handleLogout();
-        }
-      } catch (error) {
-        handleLogout();
-      }
-    } else {
-      setIsLoggedIn(false);
-    }
-  };
-
-  useEffect(() => {
-    checkLoginStatus();
-  }, []);
-
-  const handleLoginSuccess = () => {
-    setIsLoginModalOpen(false);
-    checkLoginStatus();
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-  };
 
   const handleHeroSubmit = (e) => {
     e.preventDefault();
@@ -105,7 +70,6 @@ function Home() {
             <>
               <Link to="/profile" className="text-gray-600 hover:text-blue-500">Profile</Link>
               <button
-                onClick={handleLogout}
                 className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
               >
                 Logout
@@ -143,7 +107,7 @@ function Home() {
         >
           ✕
         </button>
-        <Login onLoginSuccess={handleLoginSuccess} />
+        <Login/>
       </Modal>
 
       {/* Create Account Modal */}
