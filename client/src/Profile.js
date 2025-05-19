@@ -26,7 +26,7 @@ function Profile() {
 
   const fetchUserData = async (token) => {
     try {
-      const response = await axios.get('http://localhost:5000/auth/profile', {
+      const response = await axios.get('http://localhost:5000/auth', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -54,7 +54,7 @@ function Profile() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        'http://localhost:5000/auth/update-profile',
+        'http://localhost:5000/auth',
         editedUser,
         {
           headers: {
