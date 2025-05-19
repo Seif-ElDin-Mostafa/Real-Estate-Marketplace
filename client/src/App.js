@@ -5,6 +5,7 @@ import Buy from './Buy';
 import Sell from './Sell';
 import AboutUs from './AboutUs';
 import Profile from './Profile';
+import Admin from './Admin';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/buy" element={<Buy />} />
         <Route path="/sale" element={<Sell />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </Router>
   );
