@@ -18,6 +18,20 @@ function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleLoginSuccess = () => {
+    setIsLoginModalOpen(false);
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+  };
 
   const handleHeroSubmit = (e) => {
     e.preventDefault();
@@ -70,6 +84,7 @@ function Home() {
             <>
               <Link to="/profile" className="text-gray-600 hover:text-blue-500">Profile</Link>
               <button
+                onClick={handleLogout}
                 className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
               >
                 Logout
@@ -107,7 +122,7 @@ function Home() {
         >
           ✕
         </button>
-        <Login/>
+        <Login onLoginSuccess={handleLoginSuccess} />
       </Modal>
 
       {/* Create Account Modal */}
