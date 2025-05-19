@@ -16,11 +16,15 @@ function Home() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isCreateAccountModalOpen, setIsCreateAccountModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+    console.log('Retrieved role from storage:', role);
     setIsLoggedIn(!!token);
+    setUserRole(role);
   }, []);
 
   const handleLoginSuccess = () => {
@@ -82,7 +86,11 @@ function Home() {
           
           {isLoggedIn ? (
             <>
-              <Link to="/profile" className="text-gray-600 hover:text-blue-500">Profile</Link>
+              {userRole === 'admin' ? (
+                <Link to="/admin" className="text-gray-600 hover:text-blue-500">Admin Panel</Link>
+              ) : (
+                <Link to="/profile" className="text-gray-600 hover:text-blue-500">Profile</Link>
+              )}
               <button
                 onClick={handleLogout}
                 className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition"

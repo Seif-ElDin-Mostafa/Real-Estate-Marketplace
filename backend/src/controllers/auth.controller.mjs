@@ -52,7 +52,7 @@ export const login = async (req, res, next) => {
         const payload = {id: user._id, username: user.username, role: user.role};
         const token = jwt.sign(payload, JWT_SECRET);
 
-        return res.status(200).json({token});
+        return res.status(200).json({token, role: user.role});
     } catch (error) {
         next(error);
     }
