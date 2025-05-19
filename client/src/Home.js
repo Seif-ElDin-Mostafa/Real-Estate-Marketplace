@@ -88,9 +88,9 @@ function Home() {
             <>
               {userRole === 'admin' ? (
                 <Link to="/admin" className="text-gray-600 hover:text-blue-500">Admin Panel</Link>
-              ) : (
+              ) : userRole === 'user' ? (
                 <Link to="/profile" className="text-gray-600 hover:text-blue-500">Profile</Link>
-              )}
+              ) : null}
               <button
                 onClick={handleLogout}
                 className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
