@@ -32,9 +32,9 @@ function Profile() {
         }
       });
       
-      if (response.status === 200) {
-        setUser(response.data);
-        setEditedUser(response.data);
+      if (response.status === 200 && response.data.success) {
+        setUser(response.data.data);
+        setEditedUser(response.data.data);
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -63,8 +63,8 @@ function Profile() {
         }
       );
       
-      if (response.status === 200) {
-        setUser(response.data);
+      if (response.status === 200 && response.data.success) {
+        setUser(response.data.data);
         setIsEditing(false);
         alert('Profile updated successfully!');
       }
