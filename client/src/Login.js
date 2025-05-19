@@ -15,8 +15,13 @@ function Login({ onLoginSuccess }) {
       });
       
       if (response.status === 200) {
+        console.log('Login response:', response.data);
+
         // Store the JWT token
         localStorage.setItem('token', response.data.token);
+        // Store the user role
+        localStorage.setItem('role', response.data.role);
+        console.log('Stored role:', response.data.role);
         if (onLoginSuccess) {
           onLoginSuccess(); // Call the callback to update parent state
         }
