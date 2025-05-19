@@ -98,8 +98,19 @@ export const updateUser = async (req, res, next) => {
 }
 export const deleteUser = async (req, res, next) => {
     try{
-        if (req.user.role !== "admin") return res.sendStatus(403);
+          if (req.user.role !== "admin") return res.sendStatus(403);
           const user = await Users.findByIdAndDelete(req.params.id);
+          if (!user) return res.sendStatus(404);
+          return res.status(200).send({ success: true, data: null, message: "User Deleted", error: null });
+    }
+    catch(error){
+        next(error);
+    }
+}
+
+export const deleteMe = async (req, res, next) => {
+    try{
+          const user = await Users.findByIdAndDelete(req.user.id);
           if (!user) return res.sendStatus(404);
           return res.status(200).send({ success: true, data: null, message: "User Deleted", error: null });
     }
@@ -111,7 +122,6 @@ export const deleteUser = async (req, res, next) => {
 export const changePassword = async (req, res, next) => {
     try{
         const { body: { currentPassword, newPassword } } = req;
-        const hashedPassword = hashPassword(currentPassword);
         const user = await Users.findByIdAndUpdate(req.user.id);
         if (!user) return res.sendStatus(404);
         const isMatch = await bcrypt.compare(currentPassword, user.password);

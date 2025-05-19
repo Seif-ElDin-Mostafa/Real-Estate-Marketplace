@@ -26,7 +26,7 @@ function Profile() {
 
   const fetchUserData = async (token) => {
     try {
-      const response = await axios.get('http://localhost:5000/auth/profile', {
+      const response = await axios.get('http://localhost:5000/auth', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -54,7 +54,7 @@ function Profile() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        'http://localhost:5000/auth/update-profile',
+        'http://localhost:5000/auth',
         editedUser,
         {
           headers: {
@@ -119,7 +119,7 @@ function Profile() {
     if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete('http://localhost:5000/auth/delete-account', {
+        await axios.delete('http://localhost:5000/auth', {
           headers: {
             Authorization: `Bearer ${token}`
           }
