@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { register, login, getUser, updateMe,updateUser,deleteUser} from "../controllers/auth.controller.mjs";
+import { register, login, getUser, updateMe, updateUser, deleteUser, changePassword} from "../controllers/auth.controller.mjs";
 import userValidator from "../validators/user.validator.mjs";
 import { validate } from "../middleware/validate.middleware.mjs";
 import { get } from "mongoose";
@@ -18,4 +18,7 @@ router.put("/",authenticate,updateMe);
 router.put("/:id",authenticate,updateUser);
 
 router.delete("/:id",authenticate,deleteUser);
+
+router.put("/change-password", authenticate, changePassword);
+
 export default router;
