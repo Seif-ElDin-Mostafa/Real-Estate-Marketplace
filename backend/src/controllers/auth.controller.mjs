@@ -107,4 +107,21 @@ export const deleteUser = async (req, res, next) => {
         next(error);
     }
 }
-  
+
+export const changePassword = async (req, res, next) => {
+    try{
+        const { body: { currentPassword, newPassword } } = req;
+        const hashedPassword = hashPassword(currentPassword);
+        const user = await Users.findByIdAndUpdate(req.user.id);
+        if (!user) return res.sendStatus(404);
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) return res.status(401).send({ success: false, message: "Invalid Credentials" });
+        const newHashedPassword = hashPassword(newPassword);
+        user.password = newHashedPassword;
+        await user.save();
+        return res.status(200).send({ success: true, data: user, message: "Password Changed", error: null });
+    }
+    catch(error){
+        next(error);
+    }
+}
