@@ -6,11 +6,12 @@ import Sell from './Sell';
 import AboutUs from './AboutUs';
 import Profile from './Profile';
 import Admin from './Admin';
-
+import Navigation from './components/Navigation';
 
 function App() {
   return (
     <Router>
+      <Navigation />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUs />} />

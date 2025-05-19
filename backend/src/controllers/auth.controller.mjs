@@ -21,7 +21,7 @@ export const register = async (req, res, next) => {
       });
     }
 
-    const hashedPassword = hashPassword(password);
+    const hashedPassword = await hashPassword(password);
     const user = await Users.create({
       username,
       password: hashedPassword,
@@ -120,18 +120,24 @@ export const deleteMe = async (req, res, next) => {
 }
 
 export const changePassword = async (req, res, next) => {
-    try{
-        const { body: { currentPassword, newPassword } } = req;
-        const user = await Users.findByIdAndUpdate(req.user.id);
-        if (!user) return res.sendStatus(404);
-        const isMatch = await bcrypt.compare(currentPassword, user.password);
-        if (!isMatch) return res.status(401).send({ success: false, message: "Invalid Credentials" });
-        const newHashedPassword = hashPassword(newPassword);
-        user.password = newHashedPassword;
-        await user.save();
-        return res.status(200).send({ success: true, data: user, message: "Password Changed", error: null });
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await Users.findById(req.user.id);
+    if (!user) return res.sendStatus(404);
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).send({ success: false, message: "Current password is incorrect" });
     }
-    catch(error){
-        next(error);
-    }
-}
+
+    const hashedNewPassword = await hashPassword(newPassword);
+    user.password = hashedNewPassword;
+    await user.save();
+
+    return res.status(200).send({ success: true, data: null, message: "Password changed successfully", error: null });
+  } catch (error) {
+    console.error('Password change error:', error);
+    next(error);
+  }
+};

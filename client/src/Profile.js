@@ -89,28 +89,37 @@ function Profile() {
 
   const handleChangePassword = async () => {
     const currentPassword = prompt('Enter current password:');
-    if (currentPassword) {
-      const newPassword = prompt('Enter new password:');
-      if (newPassword) {
-        try {
-          const token = localStorage.getItem('token');
-          await axios.put(
-            'http://localhost:5000/auth/change-password',
-            {
-              currentPassword,
-              newPassword
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            }
-          );
-          alert('Password updated successfully!');
-        } catch (error) {
-          console.error('Error changing password:', error);
-          alert('Failed to change password');
+    if (!currentPassword) return;
+
+    const newPassword = prompt('Enter new password:');
+    if (!newPassword) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(
+        'http://localhost:5000/auth/change-password',
+        {
+          currentPassword,
+          newPassword
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
+      );
+      
+      if (response.status === 200 && response.data.success) {
+        alert('Password updated successfully!');
+      } else {
+        alert(response.data.message || 'Failed to update password');
+      }
+    } catch (error) {
+      console.error('Error changing password:', error);
+      if (error.response?.status === 401) {
+        alert('Current password is incorrect');
+      } else {
+        alert(error.response?.data?.message || 'Failed to change password');
       }
     }
   };
